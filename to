@@ -1,0 +1,45 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+func main() {
+	reader := bufio.NewReader(os.Stdin)
+	var num1, num2 int
+	var operator string
+
+	fmt.Println("--- Simple Add/Subtract Calculator ---")
+	fmt.Println("Enter your equation separated by spaces (e.g., 5 + 3 or 10 - 4):")
+
+	// Read a full line so the expression can be validated cleanly.
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("Error reading input. Please ensure you use the format: Number Operator Number (e.g., 5 + 3)")
+		os.Exit(1)
+	}
+	input = strings.TrimSpace(input)
+
+	// Scan the three expected parts from the line.
+	if _, err := fmt.Sscanf(input, "%d %s %d", &num1, &operator, &num2); err != nil {
+		fmt.Println("Error reading input. Please ensure you use the format: Number Operator Number (e.g., 5 + 3)")
+		os.Exit(1)
+	}
+
+	var result int
+
+	switch operator {
+	case "+":
+		result = num1 + num2
+	case "-":
+		result = num1 - num2
+	default:
+		fmt.Printf("Error: Unsupported operator '%s'. This calculator only supports '+' and '-'.\n", operator)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Result: %d %s %d = %d\n", num1, operator, num2, result)
+}
